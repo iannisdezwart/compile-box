@@ -211,18 +211,14 @@ const runScala = async () =>
 const runPerl = async () => await run('perl /shared/code')
 
 /**
- * Run BC code and resolve the output.
+ * Run Golfscript code and resolve the output.
  */
-const runBC = async () =>
-{
-	// BC expects a newline at the end of the code.
+const runGolfscript = async () => await run('golfscript /shared/code')
 
-	await run('echo >> /shared/code')
-
-	// Run the code and return the output.
-
-	return await run('cat /shared/code | bc')
-}
+/**
+ * Run Fish code and resolve the output.
+ */
+const runFish = async () => await run('python3 /shared/fish.py /shared/code')
 
 // Map of all languages and their respective run functions.
 
@@ -239,7 +235,8 @@ const langFuncs = {
 	go: runGo,
 	scala: runScala,
 	perl: runPerl,
-	bc: runBC
+	golfscript: runGolfscript,
+	fish: runFish
 }
 
 /**

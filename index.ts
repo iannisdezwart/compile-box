@@ -3,7 +3,7 @@ import { run, RunRequest } from './run'
 
 const PORT = +process.argv[2] || 3000
 const LANGS = [ 'js', 'py', 'c', 'cpp', 'java', 'bash', 'rust', 'php', 'ruby',
-	'go', 'scala', 'perl', 'bc' ]
+	'go', 'scala', 'perl', 'golfscript', 'fish' ]
 const api = createAPI(PORT)
 
 api.post('/run', async (req, res) =>

@@ -6,6 +6,7 @@ export interface RunRequest
 {
 	lang: string
 	code: string
+	input?: string
 }
 
 const KILL_AFTER_SECONDS = 10
@@ -55,6 +56,11 @@ export const run = async (req: RunRequest) =>
 
 		const codeFile = `${ sharedDir }/code`
 		writeFileSync(codeFile, req.code, 'utf-8')
+
+		// Copy the input file to the shared directory.
+
+		const inputFile = `${ sharedDir }/input`
+		writeFileSync(inputFile, req.input || '', 'utf-8')
 
 		// Run the docker container.
 

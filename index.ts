@@ -8,6 +8,8 @@ const api = createAPI(PORT)
 
 api.post('/run', async (req, res) =>
 {
+	res.setHeader('Access-Control-Allow-Origin', '*')
+
 	const body = await readJSONBody(req)
 
 	if (body == null || body.lang == null || body.code == null)

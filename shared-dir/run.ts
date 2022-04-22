@@ -248,6 +248,10 @@ const langFuncs = {
  */
 const main = async () =>
 {
+	// Save the container ID.
+
+	await run('cat /proc/self/cgroup | grep "docker" | sed s/\\\\//\\\\n/g | tail -1 > /shared/container')
+
 	// Run the code and save stdout and stderr to files.
 
 	if (langFuncs[lang] == null)

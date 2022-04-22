@@ -59,7 +59,7 @@ export const run = async (req: RunRequest) =>
 		// Run the docker container.
 
 		const containerCmd = `node /shared/run.js ${ req.lang }`
-		const dockerArgs = `--network none --rm -a STDOUT -v ${ sharedDir }:/shared`
+		const dockerArgs = `--network none --rm -a STDOUT -a STDERR -v ${ sharedDir }:/shared`
 		await exec(`docker run ${ dockerArgs } compile-box ${ containerCmd }`, {
 			timeout: KILL_AFTER_SECONDS * 1000
 		})
@@ -71,6 +71,18 @@ export const run = async (req: RunRequest) =>
 	}
 	catch (err)
 	{
+		// Kill the container if it's still running.
+
+		try
+		{
+			const dockerId = readFileSync(`${ sharedDir }/container`, 'utf-8')
+			await exec(`docker kill ${ dockerId }`)
+		}
+		catch (err)
+		{
+			// The container is already dead.
+		}
+
 		// Clean up the shared directory.
 
 		await exec(`rm -rf ${ sharedDir }`)

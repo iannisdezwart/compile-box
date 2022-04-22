@@ -60,7 +60,7 @@ export const run = async (req: RunRequest) =>
 
 		const containerCmd = `node /shared/run.js ${ req.lang }`
 		const dockerArgs = `--network none --rm -a STDOUT -v ${ sharedDir }:/shared`
-		await exec(`docker run ${ dockerArgs } virtual_machine ${ containerCmd }`, {
+		await exec(`docker run ${ dockerArgs } compile-box ${ containerCmd }`, {
 			timeout: KILL_AFTER_SECONDS * 1000
 		})
 

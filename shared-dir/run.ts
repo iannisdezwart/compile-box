@@ -216,12 +216,12 @@ const runPerl = async () => await run(`perl /shared/code ${ PIPE_INPUT }`)
 /**
  * Run Golfscript code and resolve the output.
  */
-const runGolfscript = async () => await run(`golfscript /shared/code ${ PIPE_INPUT }`)
+const runGolfscript = async () => await run(`golfscript /shared/code < /shared/input`)
 
 /**
  * Run Fish code and resolve the output.
  */
-const runFish = async () => await run(`python3 /shared/fish.py /shared/code ${ PIPE_INPUT }`)
+const runFish = async () => await run(`python3 /shared/fish.py /shared/code < /shared/input`)
 
 // Map of all languages and their respective run functions.
 

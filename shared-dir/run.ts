@@ -14,6 +14,7 @@ const lang = process.argv[2]
  */
 const run = (cmd: string) => new Promise<Output>((resolve, reject) =>
 {
+	console.log(`running ${ cmd } inside container`)
 	exec(cmd, (err, stdout, stderr) => {
 		if (err)
 		{
@@ -24,15 +25,17 @@ const run = (cmd: string) => new Promise<Output>((resolve, reject) =>
 	})
 })
 
+const PIPE_INPUT = '"$(cat /shared/input)" < /shared/input'
+
 /**
  * Runs JavaScript code and resolves the output.
  */
-const runJS = async () => await run('node /shared/code < /shared/input')
+const runJS = async () => await run(`node /shared/code ${ PIPE_INPUT }`)
 
 /**
  * Runs Python code and resolves the output.
  */
-const runPython = async () => await run('python3 /shared/code < /shared/input')
+const runPython = async () => await run(`python3 /shared/code ${ PIPE_INPUT }`)
 
 /**
  * Compiles C code, runs it, and resolves the output.
@@ -46,7 +49,7 @@ const runC = async () =>
 
 	// Run the compiled code.
 
-	return await run('/shared/exec < /shared/input')
+	return await run(`/shared/exec ${ PIPE_INPUT }`)
 }
 
 /**
@@ -61,7 +64,7 @@ const runCpp = async () =>
 
 	// Run the compiled code.
 
-	return await run('/shared/exec < /shared/input')
+	return await run(`/shared/exec ${ PIPE_INPUT }`)
 }
 
 /**
@@ -109,13 +112,13 @@ const runJava = async () =>
 
 	// The main method exists. Run the class.
 
-	return await run(`java/bin/java -cp /shared ${ mainClass } < /shared/input`)
+	return await run(`java/bin/java -cp /shared ${ mainClass } ${ PIPE_INPUT }`)
 }
 
 /**
  * Runs Bash code and resolves the output.
  */
-const runBash = async () => await run('chmod a+x /shared/code && bash /shared/code < /shared/input')
+const runBash = async () => await run(`chmod a+x /shared/code && bash /shared/code ${ PIPE_INPUT }`)
 
 /**
  * Compile Rust code, run it, and resolve the output.
@@ -129,18 +132,18 @@ const runRust = async () =>
 
 	// Run the compiled code.
 
-	return await run('/shared/exec < /shared/input')
+	return await run(`/shared/exec ${ PIPE_INPUT }`)
 }
 
 /**
  * Run PHP code and resolve the output.
  */
-const runPHP = async () => await run('php /shared/code < /shared/input')
+const runPHP = async () => await run(`php /shared/code ${ PIPE_INPUT }`)
 
 /**
  * Run Ruby code and resolve the output.
  */
-const runRuby = async () => await run('ruby /shared/code < /shared/input')
+const runRuby = async () => await run(`ruby /shared/code ${ PIPE_INPUT }`)
 
 /**
  * Run Go code and resolve the output.
@@ -154,7 +157,7 @@ const runGo = async () =>
 
 	// Run the compiled code.
 
-	return await run('/shared/exec < /shared/input')
+	return await run(`/shared/exec ${ PIPE_INPUT }`)
 }
 
 /**
@@ -202,23 +205,23 @@ const runScala = async () =>
 
 	// The main method exists. Run the class.
 
-	return await run(`scala -cp /shared ${ mainClass } < /shared/input`)
+	return await run(`scala -cp /shared ${ mainClass } ${ PIPE_INPUT }`)
 }
 
 /**
  * Run Perl code and resolve the output.
  */
-const runPerl = async () => await run('perl /shared/code < /shared/input')
+const runPerl = async () => await run(`perl /shared/code ${ PIPE_INPUT }`)
 
 /**
  * Run Golfscript code and resolve the output.
  */
-const runGolfscript = async () => await run('golfscript /shared/code < /shared/input')
+const runGolfscript = async () => await run(`golfscript /shared/code ${ PIPE_INPUT }`)
 
 /**
  * Run Fish code and resolve the output.
  */
-const runFish = async () => await run('python3 /shared/fish.py /shared/code < /shared/input')
+const runFish = async () => await run(`python3 /shared/fish.py /shared/code ${ PIPE_INPUT }`)
 
 // Map of all languages and their respective run functions.
 
